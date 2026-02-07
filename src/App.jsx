@@ -1,3 +1,4 @@
+```javascript
 import React, { useState, useEffect, useCallback } from 'react';
 import { Terminal } from './components/Terminal';
 import { ChallengesPanel } from './components/ChallengesPanel';
@@ -9,6 +10,19 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { useStore } from './store/useStore';
 import { challenges } from './data/challenges';
+
+/*
+### 1. Guía Inteligente de Comandos (Did you mean?)
+- **Algoritmo de Levenshtein**: Implementado en `src / utils / commandUtils.js` para calcular la similitud entre comandos.
+- **Sugerencias Contextuales**: La terminal ahora sugiere el comando correcto si el usuario comete un error tipográfico (ej. sugerir `aws s3` si se escribe `aws s4`).
+- **Ayuda de Subcomandos**: Si se introduce un subcomando erróneo, la terminal lista las opciones válidas para ese servicio.
+
+### 2. Optimización UX Móvil
+- **Layout Adaptativo**: Ajustado el layout para que el panel de Retos y la Consola se apilen verticalmente en pantallas pequeñas.
+- **Orden de Lectura**: Se configuró para que la Consola aparezca al final en móviles, priorizando la visibilidad de los objetivos y el progreso.
+- **Header Responsivo**: El logo y los botones se ajustan automáticamente; el botón principal cambia a modo "INFO" compacto en celulares.
+- **Utilidades de Visibilidad**: Añadidas clases `.hide - mobile` y `.show - mobile` para un control fino de elementos por dispositivo.
+*/
 
 function App() {
     const [isManualOpen, setIsManualOpen] = useState(false);
@@ -26,7 +40,7 @@ function App() {
     useEffect(() => {
         if (level > 1) {
             triggerConfetti();
-            addNotification('¡Subida de Nivel!', `Has alcanzado el Nivel ${level}`, 'achievement');
+            addNotification('¡Subida de Nivel!', `Has alcanzado el Nivel ${ level } `, 'achievement');
         }
     }, [level]);
 
@@ -61,30 +75,31 @@ function App() {
 
             {/* Header Premium con Clases de Respaldo */}
             <header className="premium-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div style={{ background: 'linear-gradient(to bottom right, #FF9900, #cc7a00)', padding: '12px', borderRadius: '16px' }}>
-                        <Cloud color="white" size={28} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                    <div style={{ background: 'linear-gradient(to bottom right, #FF9900, #cc7a00)', padding: '10px', borderRadius: '14px' }}>
+                        <Cloud color="white" size={24} />
                     </div>
                     <div>
-                        <h1 style={{ fontSize: '28px', fontWeight: '900', letterSpacing: '-1px' }}>
+                        <h1 style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '-0.5px' }} className="header-title">
                             AWS <span style={{ color: '#FF9900' }}>PLAYGROUND</span>
                         </h1>
-                        <p style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', letterSpacing: '4px', textTransform: 'uppercase' }}>Cloud Simulation Environment</p>
+                        <p style={{ fontSize: '9px', color: '#64748b', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase' }} className="header-subtitle">Cloud Simulation Environment</p>
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <button
                         onClick={() => setIsManualOpen(true)}
+                        className="btn-how-to-play"
                         style={{
-                            display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px',
-                            background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)',
-                            color: 'white', fontWeight: '800', fontSize: '11px'
+                            display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px',
+                            background: 'rgba(255,255,255,0.05)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'white', fontWeight: '800', fontSize: '10px'
                         }}
                     >
-                        <HelpCircle size={16} /> ¿CÓMO JUGAR?
+                        <HelpCircle size={14} /> <span className="hide-mobile">¿CÓMO JUGAR?</span><span className="show-mobile">INFO</span>
                     </button>
-                    <a href="#" style={{ color: '#94a3b8' }}><Github size={24} /></a>
+                    <a href="#" style={{ color: '#94a3b8' }}><Github size={20} /></a>
                 </div>
             </header>
 

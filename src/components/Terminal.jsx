@@ -6,6 +6,8 @@ import { commands } from '../data/commands';
 import { challenges } from '../data/challenges';
 import { useStore } from '../store/useStore';
 
+import { findClosestMatch } from '../utils/commandUtils';
+
 export const Terminal = ({ onCompleteAction }) => {
     const terminalRef = useRef(null);
     const xtermRef = useRef(null);
@@ -17,6 +19,8 @@ export const Terminal = ({ onCompleteAction }) => {
         if (service === 'help') return ['aws help'];
         return Object.keys(commands[service].subcommands || {}).map(sub => `aws ${service} ${sub}`);
     });
+
+    const services = Object.keys(commands).filter(s => s !== 'help');
 
     useEffect(() => {
         const term = new XTerm({
@@ -113,7 +117,9 @@ export const Terminal = ({ onCompleteAction }) => {
         const [main, service, sub, ...args] = parts;
 
         if (main !== 'aws') {
+            const suggestion = findClosestMatch(main, ['aws']);
             xtermRef.current.writeln(`\x1b[31merror:\x1b[0m command not found: ${main}`);
+            if (suggestion) xtermRef.current.writeln(`\x1b[33m¿Quisiste decir "${suggestion}"?\x1b[0m`);
             return;
         }
 
@@ -124,13 +130,22 @@ export const Terminal = ({ onCompleteAction }) => {
 
         const cmdService = commands[service];
         if (!cmdService) {
+            const suggestion = findClosestMatch(service, services);
             xtermRef.current.writeln(`\x1b[31merror:\x1b[0m unknown service: ${service}`);
+            if (suggestion) xtermRef.current.writeln(`\x1b[33m¿Quisiste decir "aws ${suggestion}"?\x1b[0m`);
             return;
         }
 
+        const subcommands = Object.keys(cmdService.subcommands || {});
         const cmdSub = cmdService.subcommands[sub];
         if (!cmdSub) {
+            const suggestion = findClosestMatch(sub, subcommands);
             xtermRef.current.writeln(`\x1b[31merror:\x1b[0m unknown subcommand '${sub}' for service '${service}'`);
+            if (suggestion) {
+                xtermRef.current.writeln(`\x1b[33m¿Quisiste decir "aws ${service} ${suggestion}"?\x1b[0m`);
+            } else {
+                xtermRef.current.writeln(`\x1b[90mTip: usa 'aws ${service} help' para ver comandos disponibles.\x1b[0m`);
+            }
             return;
         }
 
