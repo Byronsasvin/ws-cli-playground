@@ -1,4 +1,3 @@
-```javascript
 import React, { useState, useEffect, useCallback } from 'react';
 import { Terminal } from './components/Terminal';
 import { ChallengesPanel } from './components/ChallengesPanel';
@@ -10,19 +9,6 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { useStore } from './store/useStore';
 import { challenges } from './data/challenges';
-
-/*
-### 1. Guía Inteligente de Comandos (Did you mean?)
-- **Algoritmo de Levenshtein**: Implementado en `src / utils / commandUtils.js` para calcular la similitud entre comandos.
-- **Sugerencias Contextuales**: La terminal ahora sugiere el comando correcto si el usuario comete un error tipográfico (ej. sugerir `aws s3` si se escribe `aws s4`).
-- **Ayuda de Subcomandos**: Si se introduce un subcomando erróneo, la terminal lista las opciones válidas para ese servicio.
-
-### 2. Optimización UX Móvil
-- **Layout Adaptativo**: Ajustado el layout para que el panel de Retos y la Consola se apilen verticalmente en pantallas pequeñas.
-- **Orden de Lectura**: Se configuró para que la Consola aparezca al final en móviles, priorizando la visibilidad de los objetivos y el progreso.
-- **Header Responsivo**: El logo y los botones se ajustan automáticamente; el botón principal cambia a modo "INFO" compacto en celulares.
-- **Utilidades de Visibilidad**: Añadidas clases `.hide - mobile` y `.show - mobile` para un control fino de elementos por dispositivo.
-*/
 
 function App() {
     const [isManualOpen, setIsManualOpen] = useState(false);
@@ -40,7 +26,7 @@ function App() {
     useEffect(() => {
         if (level > 1) {
             triggerConfetti();
-            addNotification('¡Subida de Nivel!', `Has alcanzado el Nivel ${ level } `, 'achievement');
+            addNotification('¡Subida de Nivel!', `Has alcanzado el Nivel ${level} `, 'achievement');
         }
     }, [level]);
 
