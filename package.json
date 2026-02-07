@@ -2,7 +2,7 @@
   "name": "aws-cli-playground",
   "version": "1.0.0",
   "type": "module",
-  "description": "AWS CLI Interactive Learning Platform - Practice AWS commands without an AWS account",
+  "description": "Plataforma de Aprendizaje Interactiva de AWS CLI - Practica comandos de AWS sin necesidad de una cuenta real",
   "author": "Byron Lainez <byronsasvin@gmail.com>",
   "license": "MIT",
   "scripts": {
